@@ -6,7 +6,7 @@ import android.util.SparseArray;
 import android.view.View;
 
 public class PinnedDialogManager {
-    private final SparseArray<PinnedDialog> mPinnedDialogs = new SparseArray<PinnedDialog>();
+    private final SparseArray<PinnedDialog> mPinnedDialogs = new SparseArray<>();
 
     protected PinnedDialog onCreatePinnedDialog(int id) {
         return null;

@@ -24,13 +24,13 @@ import java.util.IllegalFormatException;
  * Handles logging formatted strings.
  */
 public class LogUtils {
-    public static String TAG = "LogUtils";
+    private static String TAG = "LogUtils";
 
     /**
      * The minimum log level that will be printed to the console. Set this to
      * {@link Log#ERROR} for release or {@link Log#VERBOSE} for debugging.
      */
-    public static int LOG_LEVEL = Log.ERROR;
+    private static int LOG_LEVEL = Log.ERROR;
 
     /**
      * Logs a formatted string to the console using the source object's name as
@@ -69,29 +69,5 @@ public class LogUtils {
         } catch (IllegalFormatException e) {
             Log.e(TAG, "Bad formatting string: \"" + format + "\"", e);
         }
-    }
-
-    /**
-     * Logs a formatted string to the console using the default tag (see
-     * {@link LogUtils#TAG}.
-     *
-     * @param priority The log entry priority, see
-     *            {@link Log#println(int, String, String)}.
-     * @param format A format string, see
-     *            {@link String#format(String, Object...)}.
-     * @param args String formatter arguments.
-     */
-    public static void log(int priority, String format, Object... args) {
-        log(null, priority, format, args);
-    }
-
-    /**
-     * Sets the log display level.
-     *
-     * @param logLevel The minimum log level that will be printed to the
-     *            console.
-     */
-    public static void setLogLevel(int logLevel) {
-        LOG_LEVEL = logLevel;
     }
 }

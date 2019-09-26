@@ -18,10 +18,9 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-import com.googamaphone.compat.AudioManagerCompatUtils;
 import com.googamaphone.typeandspeak.utils.ReferencedHandler;
 
-public class PlaybackDialog extends AlertDialog {
+class PlaybackDialog extends AlertDialog {
     private final MediaPlayer mMediaPlayer;
     private final View mContentView;
     private final SeekBar mProgress;
@@ -37,7 +36,7 @@ public class PlaybackDialog extends AlertDialog {
     private boolean mMediaPlayerReleased;
     private boolean mMediaPlayerPrepared;
 
-    public PlaybackDialog(Context context, boolean fromLibrary) {
+    PlaybackDialog(Context context, boolean fromLibrary) {
         super(context);
 
         mFromLibrary = fromLibrary;
@@ -49,13 +48,13 @@ public class PlaybackDialog extends AlertDialog {
 
         mContentView = LayoutInflater.from(context).inflate(R.layout.playback, null);
 
-        mPlayButton = (ImageButton) mContentView.findViewById(R.id.play);
+        mPlayButton = mContentView.findViewById(R.id.play);
         mPlayButton.setOnClickListener(mViewClickListener);
 
-        mShareButton = (ImageButton) mContentView.findViewById(R.id.share);
+        mShareButton = mContentView.findViewById(R.id.share);
         mShareButton.setOnClickListener(mViewClickListener);
 
-        mProgress = (SeekBar) mContentView.findViewById(R.id.progress);
+        mProgress = mContentView.findViewById(R.id.progress);
         mProgress.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
 
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -86,10 +85,10 @@ public class PlaybackDialog extends AlertDialog {
 
     private void manageAudioFocus(boolean gain) {
         if (gain) {
-            AudioManagerCompatUtils.requestAudioFocus(mAudioManager, null,
-                    AudioManager.STREAM_MUSIC, AudioManagerCompatUtils.AUDIOFOCUS_GAIN_TRANSIENT);
+            mAudioManager.requestAudioFocus(null,
+                    AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
         } else {
-            AudioManagerCompatUtils.abandonAudioFocus(mAudioManager, null);
+            mAudioManager.abandonAudioFocus(null);
         }
     }
 
@@ -202,12 +201,12 @@ public class PlaybackDialog extends AlertDialog {
         }
     };
 
-    private static class MediaPoller extends ReferencedHandler<PlaybackDialog> {
+    static class MediaPoller extends ReferencedHandler<PlaybackDialog> {
         private static final int MSG_CHECK_PROGRESS = 1;
 
         private boolean mStopPolling;
 
-        public MediaPoller(PlaybackDialog parent) {
+        MediaPoller(PlaybackDialog parent) {
             super(parent);
         }
 
@@ -228,12 +227,12 @@ public class PlaybackDialog extends AlertDialog {
             }
         }
 
-        public void stopPolling() {
+        void stopPolling() {
             mStopPolling = true;
             removeMessages(MSG_CHECK_PROGRESS);
         }
 
-        public void startPolling() {
+        void startPolling() {
             mStopPolling = false;
             removeMessages(MSG_CHECK_PROGRESS);
             sendEmptyMessageDelayed(MSG_CHECK_PROGRESS, 200);

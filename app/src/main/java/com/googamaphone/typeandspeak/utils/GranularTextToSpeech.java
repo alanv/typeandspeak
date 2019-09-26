@@ -5,7 +5,6 @@ import java.text.BreakIterator;
 import java.util.HashMap;
 import java.util.Locale;
 
-import android.content.Context;
 import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.Engine;
@@ -39,14 +38,14 @@ public class GranularTextToSpeech {
      */
     private boolean mBypassAdvance = false;
 
-    public GranularTextToSpeech(Context context, TextToSpeech tts, Locale defaultLocale) {
-        this(context, new TextToSpeechWrapper(tts), defaultLocale);
+    public GranularTextToSpeech(TextToSpeech tts, Locale defaultLocale) {
+        this(new TextToSpeechWrapper(tts), defaultLocale);
     }
 
-    public GranularTextToSpeech(Context context, TextToSpeechStub tts, Locale defaultLocale) {
+    private GranularTextToSpeech(TextToSpeechStub tts, Locale defaultLocale) {
         mTts = tts;
 
-        mParams = new HashMap<String, String>();
+        mParams = new HashMap<>();
         mParams.put(Engine.KEY_PARAM_UTTERANCE_ID, "SingAlongTTS");
 
         if (defaultLocale != null) {
@@ -284,8 +283,8 @@ public class GranularTextToSpeech {
         }
     };
 
-    private static class SingAlongHandler extends ReferencedHandler<GranularTextToSpeech> {
-        public SingAlongHandler(GranularTextToSpeech parent) {
+    static class SingAlongHandler extends ReferencedHandler<GranularTextToSpeech> {
+        SingAlongHandler(GranularTextToSpeech parent) {
             super(parent);
         }
 
@@ -300,25 +299,24 @@ public class GranularTextToSpeech {
                     break;
             }
         }
-    };
-
-    public interface TextToSpeechStub {
-        public void setOnUtteranceCompletedListener(
-                OnUtteranceCompletedListener mOnUtteranceCompletedListener);
-
-        public int speak(String string, int queueFlush, HashMap<String, String> mParams);
-
-        public void stop();
     }
 
-    private static class TextToSpeechWrapper implements TextToSpeechStub {
+    public interface TextToSpeechStub {
+        void setOnUtteranceCompletedListener(
+                OnUtteranceCompletedListener mOnUtteranceCompletedListener);
+
+        int speak(String string, int queueFlush, HashMap<String, String> mParams);
+
+        void stop();
+    }
+
+    static class TextToSpeechWrapper implements TextToSpeechStub {
         private final TextToSpeech mTts;
 
-        public TextToSpeechWrapper(TextToSpeech tts) {
+        TextToSpeechWrapper(TextToSpeech tts) {
             mTts = tts;
         }
 
-        @SuppressWarnings("deprecation")
         @Override
         public void setOnUtteranceCompletedListener(OnUtteranceCompletedListener listener) {
             mTts.setOnUtteranceCompletedListener(listener);
@@ -336,10 +334,10 @@ public class GranularTextToSpeech {
     }
 
     public interface SingAlongListener {
-        public void onSequenceStarted();
+        void onSequenceStarted();
 
-        public void onUnitSelected(int start, int end);
+        void onUnitSelected(int start, int end);
 
-        public void onSequenceCompleted();
+        void onSequenceCompleted();
     }
 }

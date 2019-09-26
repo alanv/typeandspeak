@@ -22,9 +22,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 public class PinnedDialog {
-    public static final int ABOVE = 0x1;
-    public static final int BELOW = 0x2;
-
     private final Rect mAnchorRect = new Rect();
     private final Rect mBoundsRect = new Rect();
     private final Rect mScreenRect = new Rect();
@@ -41,7 +38,7 @@ public class PinnedDialog {
 
     private View mAnchorView;
 
-    private boolean mVisible = false;
+    private boolean mVisible;
 
     /**
      * Creates a new simple overlay.
@@ -58,9 +55,9 @@ public class PinnedDialog {
 
         LayoutInflater.from(context).inflate(R.layout.pinned_dialog, mWindowView);
 
-        mContentView = (ViewGroup) mWindowView.findViewById(R.id.content);
-        mTickBelow = (ImageView) mWindowView.findViewById(R.id.tick_below);
-        mTickAbove = (ImageView) mWindowView.findViewById(R.id.tick_above);
+        mContentView = mWindowView.findViewById(R.id.content);
+        mTickBelow = mWindowView.findViewById(R.id.tick_below);
+        mTickAbove = mWindowView.findViewById(R.id.tick_above);
         mTickAbovePadding = mWindowView.findViewById(R.id.tick_above_padding);
         mTickBelowPadding = mWindowView.findViewById(R.id.tick_below_padding);
 
@@ -75,15 +72,14 @@ public class PinnedDialog {
         mVisible = false;
     }
 
-    public final void cancel() {
+    final void cancel() {
         dismiss();
     }
 
     /**
-     * Shows the overlay. Calls the listener's
-     * {@link SimpleOverlayListener#onHide(SimpleOverlay)} if available.
+     * Shows the overlay.
      */
-    public final void show(View pinnedView) {
+    final void show(View pinnedView) {
         if (isVisible()) {
             return;
         }
@@ -98,10 +94,8 @@ public class PinnedDialog {
     }
 
     /**
-     * Hides the overlay. Calls the listener's
-     * {@link SimpleOverlayListener#onHide(SimpleOverlay)} if available.
+     * Hides the overlay.
      */
-    @SuppressWarnings("deprecation")
     public final void dismiss() {
         if (!isVisible()) {
             return;
@@ -112,13 +106,6 @@ public class PinnedDialog {
 
         final ViewTreeObserver observer = mAnchorView.getViewTreeObserver();
         observer.removeGlobalOnLayoutListener(mOnGlobalLayoutListener);
-    }
-
-    /**
-     * @return The overlay context.
-     */
-    public Context getContext() {
-        return mContext;
     }
 
     /**
@@ -173,7 +160,7 @@ public class PinnedDialog {
         return this;
     }
 
-    public View getPinnedView() {
+    View getPinnedView() {
         return mAnchorView;
     }
 

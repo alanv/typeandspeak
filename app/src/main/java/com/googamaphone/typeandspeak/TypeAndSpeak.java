@@ -1,10 +1,8 @@
 
 package com.googamaphone.typeandspeak;
 
-import com.googamaphone.GoogamaphoneActivity;
 import com.googamaphone.PinnedDialog;
 import com.googamaphone.PinnedDialogManager;
-import com.googamaphone.compat.AudioManagerCompatUtils;
 import com.googamaphone.typeandspeak.FileSynthesizer.FileSynthesizerListener;
 import com.googamaphone.typeandspeak.utils.CharSequenceIterator;
 import com.googamaphone.typeandspeak.utils.GranularTextToSpeech;
@@ -13,6 +11,7 @@ import com.googamaphone.typeandspeak.utils.ReferencedHandler;
 
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
 
+import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -29,7 +28,6 @@ import android.content.pm.ResolveInfo;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.provider.MediaStore.MediaColumns;
@@ -58,14 +56,11 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.net.URL;
 import java.text.BreakIterator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class TypeAndSpeak extends GoogamaphoneActivity {
-    private static final String TAG = TypeAndSpeak.class.getSimpleName();
-
+public class TypeAndSpeak extends Activity {
     /** Stream to use for TTS output and volume control. */
     private static final int STREAM_TYPE = AudioManager.STREAM_MUSIC;
 
@@ -95,9 +90,6 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
 
     private static final float DEFAULT_FONT = 16;
     private static final float LARGER_FONT = 36;
-
-    /** Speech parameters. */
-    private final HashMap<String, String> mParams = new HashMap<String, String>();
 
     /** Handler used for transferring TTS callbacks to the main thread. */
     private final TypeAndSpeakHandler mHandler = new TypeAndSpeakHandler(this);
@@ -157,7 +149,6 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
             }
         };
 
-        mParams.put(Engine.KEY_PARAM_UTTERANCE_ID, TAG);
         mTtsEngine = Settings.Secure.getString(resolver, Settings.Secure.TTS_DEFAULT_SYNTH);
         mTts = new TextToSpeech(this, initListener);
         mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
@@ -166,7 +157,7 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
         mInputText.setText(prefs.getString(PREF_TEXT, ""));
         mInputText.addTextChangedListener(mTextWatcher);
 
-        mTtsWrapper = new GranularTextToSpeech(this, mTts, mLocale);
+        mTtsWrapper = new GranularTextToSpeech(mTts, mLocale);
         mTtsWrapper.setListener(mSingAlongListener);
 
         // Load text from intent.
@@ -180,7 +171,7 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
         setIntent(intent);
 
         if (Intent.ACTION_SEND.equals(intent.getAction())) {
-            restoreState(intent.getExtras(), true);
+            restoreState(intent.getExtras());
         }
     }
 
@@ -218,7 +209,7 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
         editor.putBoolean(PREF_USE_LARGER_FONT, mUseLargerFont);
         editor.putString(PREF_LOCALE, mLocale.toString());
         editor.putString(PREF_TEXT, mInputText.getText().toString());
-        editor.commit();
+        editor.apply();
     }
 
     @Override
@@ -228,7 +219,6 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
         mTts.shutdown();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -245,7 +235,7 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
                                 final List<ResolveInfo> activities = pm.queryIntentActivities(
                                         intent, 0);
 
-                                if ((activities == null) || activities.isEmpty()) {
+                                if (activities.isEmpty()) {
                                     showDialog(DIALOG_CANNOT_INSTALL_DATA);
                                     break;
                                 }
@@ -333,8 +323,7 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-                            final Locale selected = (Locale) parent.getItemAtPosition(position);
-                            mLocale = selected;
+                            mLocale = (Locale) parent.getItemAtPosition(position);
                             mLocalePosition = position;
                             dialog.dismiss();
                         }
@@ -453,7 +442,6 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onPrepareDialog(int id, Dialog dialog) {
         switch (id) {
@@ -470,10 +458,10 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
         mSpeakButton.setOnClickListener(mOnClickListener);
         mSpeakButton.setVisibility(View.VISIBLE);
 
-        mSpeakControls = (ViewGroup) findViewById(R.id.play_controls);
+        mSpeakControls = findViewById(R.id.play_controls);
         mSpeakControls.setVisibility(View.GONE);
 
-        mDefaultControls = (ViewGroup) findViewById(R.id.default_controls);
+        mDefaultControls = findViewById(R.id.default_controls);
         mDefaultControls.setVisibility(View.VISIBLE);
 
         mSpeakControls.findViewById(R.id.stop).setOnClickListener(mOnClickListener);
@@ -496,16 +484,15 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
         findViewById(R.id.language).setOnClickListener(mOnClickListener);
         findViewById(R.id.library).setOnClickListener(mOnClickListener);
 
-        mInputText = (EditText) findViewById(R.id.input_text);
+        mInputText = findViewById(R.id.input_text);
     }
 
     /**
      * Restores a previously saved state.
      *
      * @param savedInstanceState The previously saved state.
-     * @boolean fromIntent Whether the state is coming from an intent.
      */
-    private void restoreState(Bundle savedInstanceState, boolean fromIntent) {
+    private void restoreState(Bundle savedInstanceState) {
         String text = savedInstanceState.getString(Intent.EXTRA_TEXT);
 
         if (text == null) {
@@ -514,16 +501,13 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
 
         // The extraction library depends on java.lang.String.getBytes(Charset),
         // which is only available in SDK 9 and above.
-        if ((Build.VERSION.SDK_INT >= 9) && fromIntent
-                && (text.startsWith("http://") || text.startsWith("https://"))) {
+        if (text.startsWith("http://") || text.startsWith("https://")) {
             mExtractionTask = new ExtractionTask() {
                 @Override
-                @SuppressWarnings("deprecation")
                 protected void onPreExecute() {
                     showDialog(DIALOG_EXTRACTING_TEXT);
                 }
 
-                @SuppressWarnings("deprecation")
                 @Override
                 protected void onPostExecute(CharSequence result) {
                     try {
@@ -568,7 +552,6 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
      * Shows the media playback dialog for the given values.
      *
      * @param contentValues The content values for the media.
-     * @param contentUri The URI for the media.
      */
     private void showPlaybackDialog(ContentValues contentValues) {
         final PlaybackDialog playback = new PlaybackDialog(this, false);
@@ -610,10 +593,10 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
 
     private void manageAudioFocus(boolean gain) {
         if (gain) {
-            AudioManagerCompatUtils.requestAudioFocus(mAudioManager, null,
-                    AudioManager.STREAM_MUSIC, AudioManagerCompatUtils.AUDIOFOCUS_GAIN_TRANSIENT);
+            mAudioManager.requestAudioFocus(null,
+                    AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
         } else {
-            AudioManagerCompatUtils.abandonAudioFocus(mAudioManager, null);
+            mAudioManager.abandonAudioFocus(null);
         }
     }
 
@@ -683,7 +666,6 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
      * @param resultCode The result code.
      * @param data The returned data.
      */
-    @SuppressWarnings("deprecation")
     private void onTtsCheck(int resultCode, Intent data) {
         // If data is null, always prompt the user to install voice data.
         if (data == null) {
@@ -879,13 +861,12 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
             mWordIterator.setText(mCharSequence);
 
             if (mWordIterator.isBoundary(start)) {
-                final int unitEnd = start;
-                final int unitStart = mWordIterator.preceding(unitEnd);
+                final int unitStart = mWordIterator.preceding(start);
                 if (unitStart == BreakIterator.DONE) {
                     return;
                 }
 
-                final CharSequence unit = TextUtils.substring(s, unitStart, unitEnd);
+                final CharSequence unit = TextUtils.substring(s, unitStart, start);
                 if (TextUtils.getTrimmedLength(unit) == 0)  {
                     return;
                 }
@@ -910,11 +891,11 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
     /**
      * Transfers callbacks to the main thread.
      */
-    private static class TypeAndSpeakHandler extends ReferencedHandler<TypeAndSpeak> {
+    static class TypeAndSpeakHandler extends ReferencedHandler<TypeAndSpeak> {
         private static final int TTS_INITIALIZED = 1;
         private static final int DISMISS_DIALOG = 2;
 
-        public TypeAndSpeakHandler(TypeAndSpeak parent) {
+        TypeAndSpeakHandler(TypeAndSpeak parent) {
             super(parent);
         }
 
@@ -930,11 +911,11 @@ public class TypeAndSpeak extends GoogamaphoneActivity {
             }
         }
 
-        public void transferOnTtsInitialized(int status) {
+        void transferOnTtsInitialized(int status) {
             obtainMessage(TTS_INITIALIZED, status, 0).sendToTarget();
         }
 
-        public void dismissDialogDelayed(int id, long delay) {
+        void dismissDialogDelayed(int id, long delay) {
             sendMessageDelayed(obtainMessage(DISMISS_DIALOG, id, 0), delay);
         }
     }

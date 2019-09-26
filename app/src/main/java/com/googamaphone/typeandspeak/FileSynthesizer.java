@@ -24,12 +24,12 @@ import android.provider.MediaStore.MediaColumns;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.Engine;
 
-public class FileSynthesizer {
+class FileSynthesizer {
     private static final String UTTERANCE_ID = "synthesize";
     private static final int UTTERANCE_COMPLETED = 1;
 
     private final ContentValues mContentValues = new ContentValues(10);
-    private final HashMap<String, String> mSpeechParams = new HashMap<String, String>();
+    private final HashMap<String, String> mSpeechParams = new HashMap<>();
 
     private final Context mContext;
     private final TextToSpeech mTts;
@@ -41,7 +41,7 @@ public class FileSynthesizer {
 
     private boolean mCanceled = false;
 
-    public FileSynthesizer(Context context, TextToSpeech tts) {
+    FileSynthesizer(Context context, TextToSpeech tts) {
         mContext = context;
         mTts = tts;
 
@@ -51,11 +51,10 @@ public class FileSynthesizer {
         mSpeechParams.put(Engine.KEY_PARAM_UTTERANCE_ID, UTTERANCE_ID);
     }
 
-    public void setListener(FileSynthesizerListener listener) {
+    void setListener(FileSynthesizerListener listener) {
         mListener = listener;
     }
 
-    @SuppressWarnings("deprecation")
     private void onUtteranceCompleted(String utteranceId) {
         mTts.setOnUtteranceCompletedListener(null);
 
@@ -69,8 +68,6 @@ public class FileSynthesizer {
     /**
      * Inserts media information into the database after a successful save
      * operation.
-     *
-     * @param contentValues The media descriptor values.
      */
     private void onWriteCompleted() {
         final ContentResolver resolver = mContext.getContentResolver();
@@ -99,8 +96,6 @@ public class FileSynthesizer {
 
     /**
      * Deletes the partially completed file after a canceled save operation.
-     *
-     * @param values The media descriptor values.
      */
     private void onWriteCanceled() {
         try {
@@ -126,8 +121,7 @@ public class FileSynthesizer {
         mContentValues.clear();
     }
 
-    @SuppressWarnings("deprecation")
-    public void writeInput(String text, Locale locale, int pitch, int rate, String filename) {
+    void writeInput(String text, Locale locale, int pitch, int rate, String filename) {
         mCanceled = false;
 
         if (filename.toLowerCase().endsWith(".wav")) {
@@ -217,8 +211,8 @@ public class FileSynthesizer {
         }
     };
     
-    private static class SynthesizerHandler extends ReferencedHandler<FileSynthesizer> {
-        public SynthesizerHandler(FileSynthesizer parent) {
+    static class SynthesizerHandler extends ReferencedHandler<FileSynthesizer> {
+        SynthesizerHandler(FileSynthesizer parent) {
             super(parent);
         }
 
@@ -233,6 +227,6 @@ public class FileSynthesizer {
     }
 
     public interface FileSynthesizerListener {
-        public void onFileSynthesized(ContentValues contentValues);
+        void onFileSynthesized(ContentValues contentValues);
     }
 }

@@ -3,7 +3,8 @@
     package="com.googamaphone.typeandspeak">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -40,9 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.googamaphone.GoogamaphoneActivity"
-            android:exported="false" />
     </application>
 
 </manifest>

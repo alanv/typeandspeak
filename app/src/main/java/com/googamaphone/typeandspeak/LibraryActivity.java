@@ -56,9 +56,7 @@ public class LibraryActivity extends ListActivity {
 
         setContentView(R.layout.library);
 
-        if (Build.VERSION.SDK_INT > 11) {
-            new SetupActionBar().run();
-        }
+        new SetupActionBar().run();
 
         requestCursor();
     }
@@ -261,12 +259,12 @@ public class LibraryActivity extends ListActivity {
         }
     };
 
-    private class LibraryCursorAdapter extends CursorAdapter {
+    class LibraryCursorAdapter extends CursorAdapter {
         private final int mLayoutId;
         private final String[] mFrom;
         private final int[] mTo;
 
-        public LibraryCursorAdapter(Context context, Cursor c, int layoutId, String[] from, int[] to) {
+        LibraryCursorAdapter(Context context, Cursor c, int layoutId, String[] from, int[] to) {
             super(context, c, false);
 
             if (from.length != to.length) {
@@ -286,7 +284,7 @@ public class LibraryActivity extends ListActivity {
             for (int i = 0; i < mFrom.length; i++) {
                 final int columnIndex = cursor.getColumnIndex(mFrom[i]);
                 final String value = cursor.getString(columnIndex);
-                final TextView textView = (TextView) view.findViewById(mTo[i]);
+                final TextView textView = view.findViewById(mTo[i]);
 
                 if (MediaStore.Audio.Media.DATE_ADDED.equals(mFrom[i])) {
                     final long longValue = Long.parseLong(value);
@@ -326,10 +324,10 @@ public class LibraryActivity extends ListActivity {
 
     }
 
-    private static class LoadMediaFromAlbum extends AsyncTask<Void, Void, Cursor> {
+    static class LoadMediaFromAlbum extends AsyncTask<Void, Void, Cursor> {
         private final Context mContext;
 
-        public LoadMediaFromAlbum(Context context) {
+        LoadMediaFromAlbum(Context context) {
             mContext = context;
         }
 

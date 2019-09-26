@@ -16,14 +16,14 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class TextToSpeechUtils {
-    public static Set<Locale> loadTtsLanguages(TextToSpeech tts, Intent data) {
+class TextToSpeechUtils {
+    static Set<Locale> loadTtsLanguages(TextToSpeech tts, Intent data) {
         if (data == null) {
             LogUtils.log(TextToSpeechUtils.class, Log.ERROR, "Received null intent");
             return Collections.emptySet();
         }
 
-        final TreeSet<Locale> availableLangs = new TreeSet<Locale>(LOCALE_COMPARATOR);
+        final TreeSet<Locale> availableLangs = new TreeSet<>(LOCALE_COMPARATOR);
 
         if (getAvailableVoicesICS(availableLangs, data)
                 || getAvailableVoicesFallback(availableLangs, data)

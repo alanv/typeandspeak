@@ -55,11 +55,11 @@ public class LanguageAdapter extends ArrayAdapter<Locale> {
         final Locale locale = getItem(position);
         final int drawableId = getFlagForLocale(locale);
 
-        final TextView textView = (TextView) view.findViewById(mTextId);
+        final TextView textView = view.findViewById(mTextId);
         final CharSequence displayName = getDisplayNameForLocale(getContext(), locale);
         textView.setText(displayName);
 
-        final ImageView imageView = (ImageView) view.findViewById(mImageId);
+        final ImageView imageView = view.findViewById(mImageId);
         if (drawableId <= 0) {
             imageView.setVisibility(View.GONE);
         } else {
