@@ -14,60 +14,59 @@
  * limitations under the License.
  */
 
-package com.googamaphone.typeandspeak.utils;
+package com.googamaphone.typeandspeak.utils
 
-import android.util.Log;
+import android.util.Log
 
-import java.util.IllegalFormatException;
+import java.util.IllegalFormatException
 
 /**
  * Handles logging formatted strings.
  */
-public class LogUtils {
-    private static String TAG = "LogUtils";
+object LogUtils {
+
+    private const val TAG = "LogUtils"
 
     /**
      * The minimum log level that will be printed to the console. Set this to
-     * {@link Log#ERROR} for release or {@link Log#VERBOSE} for debugging.
+     * [Log.ERROR] for release or [Log.VERBOSE] for debugging.
      */
-    private static int LOG_LEVEL = Log.ERROR;
+    private const val LOG_LEVEL = Log.ERROR
 
     /**
      * Logs a formatted string to the console using the source object's name as
      * the log tag. If the source object is null, the default tag (see
-     * {@link LogUtils#TAG} is used.
-     * <p>
-     * Example usage: <br>
-     * <code>
+     * [LogUtils.TAG] is used.
+     *
+     *
+     * Example usage: <br></br>
+     * `
      * LogUtils.log(this, Log.ERROR, "Invalid value: %d", value);
-     * </code>
+    ` *
      *
      * @param source The object that generated the log event.
      * @param priority The log entry priority, see
-     *            {@link Log#println(int, String, String)}.
+     * [Log.println].
      * @param format A format string, see
-     *            {@link String#format(String, Object...)}.
+     * [String.format].
      * @param args String formatter arguments.
      */
-    public static void log(Object source, int priority, String format, Object... args) {
+    fun log(source: Any?, priority: Int, format: String, vararg args: Any) {
         if (priority < LOG_LEVEL) {
-            return;
+            return
         }
 
-        final String sourceClass;
-
-        if (source == null) {
-            sourceClass = TAG;
-        } else if (source instanceof Class<?>) {
-            sourceClass = ((Class<?>) source).getSimpleName();
-        } else {
-            sourceClass = source.getClass().getSimpleName();
+        val sourceClass: String = when (source) {
+            null -> TAG
+            is Class<*> -> source.simpleName
+            else -> source.javaClass.simpleName
         }
 
         try {
-            Log.println(priority, sourceClass, String.format(format, args));
-        } catch (IllegalFormatException e) {
-            Log.e(TAG, "Bad formatting string: \"" + format + "\"", e);
+            Log.println(priority, sourceClass, String.format(format, *args))
+        } catch (e: IllegalFormatException) {
+            Log.e(TAG, "Bad formatting string: \"$format\"", e)
         }
+
     }
 }

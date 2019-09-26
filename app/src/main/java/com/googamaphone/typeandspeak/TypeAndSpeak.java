@@ -189,7 +189,7 @@ public class TypeAndSpeak extends AppCompatActivity {
         mUseLargerFont = prefs.getBoolean(PREF_USE_LARGER_FONT, false);
 
         // Never load the ADD_MORE locale as the default!
-        if (LanguageAdapter.LOCALE_ADD_MORE.equals(mLocale)) {
+        if (LanguageAdapter.Companion.getLOCALE_ADD_MORE().equals(mLocale)) {
             mLocale = Locale.getDefault();
         }
 
@@ -679,7 +679,7 @@ public class TypeAndSpeak extends AppCompatActivity {
         mSaveButton.setEnabled(true);
 
         final boolean passed = (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS);
-        final Set<Locale> locales = TextToSpeechUtils.loadTtsLanguages(mTts, data);
+        final Set<Locale> locales = TextToSpeechUtils.INSTANCE.loadTtsLanguages(mTts, data);
 
         if (!locales.isEmpty() || passed) {
             mSpeakButton.setEnabled(true);
