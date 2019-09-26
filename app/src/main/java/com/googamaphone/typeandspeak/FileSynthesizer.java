@@ -16,8 +16,8 @@ import android.provider.MediaStore.Audio.Media;
 import android.provider.MediaStore.MediaColumns;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.Engine;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AlertDialog.Builder;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog.Builder;
 
 import com.googamaphone.typeandspeak.utils.ReferencedHandler;
 
@@ -108,7 +108,7 @@ class FileSynthesizer {
 
         final String title = mContext.getString(R.string.canceled_title);
         final String message = mContext.getString(R.string.canceled_message);
-        final android.support.v7.app.AlertDialog alert = new Builder(mContext).setTitle(title).setMessage(message)
+        final androidx.appcompat.app.AlertDialog alert = new Builder(mContext).setTitle(title).setMessage(message)
                 .setPositiveButton(android.R.string.ok, null).create();
 
         mTts.stop();
