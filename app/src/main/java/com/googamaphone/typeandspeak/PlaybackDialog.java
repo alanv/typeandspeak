@@ -1,10 +1,6 @@
 
 package com.googamaphone.typeandspeak;
 
-import java.io.File;
-import java.io.IOException;
-
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +8,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,6 +16,9 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.googamaphone.typeandspeak.utils.ReferencedHandler;
+
+import java.io.File;
+import java.io.IOException;
 
 class PlaybackDialog extends AlertDialog {
     private final MediaPlayer mMediaPlayer;

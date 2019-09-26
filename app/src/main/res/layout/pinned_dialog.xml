@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.googamaphone.DispatchingLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
@@ -18,7 +19,7 @@
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:contentDescription="@null"
-            android:src="@drawable/tick_below" />
+            app:srcCompat="@drawable/tick_below" />
     </LinearLayout>
 
     <FrameLayout
@@ -42,7 +43,7 @@
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:contentDescription="@null"
-            android:src="@drawable/tick_above" />
+            app:srcCompat="@drawable/tick_above" />
     </LinearLayout>
 
 </com.googamaphone.DispatchingLinearLayout>

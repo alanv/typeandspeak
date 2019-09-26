@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
@@ -13,7 +14,7 @@
         android:contentDescription="@string/stop"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/ic_media_stop" />
+        app:srcCompat="@drawable/ic_media_stop" />
 
     <ImageView
         android:id="@+id/pause"
@@ -24,7 +25,7 @@
         android:contentDescription="@string/pause"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/ic_media_pause" />
+        app:srcCompat="@drawable/ic_media_pause" />
 
     <ImageView
         android:id="@+id/resume"
@@ -35,7 +36,7 @@
         android:contentDescription="@string/resume"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/ic_media_play"
+        app:srcCompat="@drawable/ic_media_play"
         android:visibility="gone" />
 
     <ImageView
@@ -47,7 +48,7 @@
         android:contentDescription="@string/rewind"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/ic_media_rew" />
+        app:srcCompat="@drawable/ic_media_rew" />
 
     <ImageView
         android:id="@+id/fast_forward"
@@ -58,6 +59,6 @@
         android:contentDescription="@string/fast_forward"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/ic_media_ff" />
+        app:srcCompat="@drawable/ic_media_ff" />
 
 </LinearLayout>

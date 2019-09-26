@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_body"
     android:layout_width="fill_parent"
     android:layout_height="54.0dip"
@@ -62,7 +63,7 @@
         android:focusable="true"
         android:lines="0"
         android:scaleType="center"
-        android:src="@drawable/more" />
+        app:srcCompat="@drawable/more" />
 
     <View
         android:layout_width="fill_parent"

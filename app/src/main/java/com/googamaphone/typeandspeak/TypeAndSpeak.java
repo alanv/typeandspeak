@@ -1,18 +1,6 @@
 
 package com.googamaphone.typeandspeak;
 
-import com.googamaphone.PinnedDialog;
-import com.googamaphone.PinnedDialogManager;
-import com.googamaphone.typeandspeak.FileSynthesizer.FileSynthesizerListener;
-import com.googamaphone.typeandspeak.utils.CharSequenceIterator;
-import com.googamaphone.typeandspeak.utils.GranularTextToSpeech;
-import com.googamaphone.typeandspeak.utils.GranularTextToSpeech.SingAlongListener;
-import com.googamaphone.typeandspeak.utils.ReferencedHandler;
-
-import de.l3s.boilerpipe.extractors.ArticleExtractor;
-
-import android.app.Activity;
-import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -34,6 +22,8 @@ import android.provider.MediaStore.MediaColumns;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.Engine;
+import android.support.v7.app.AlertDialog.Builder;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -53,6 +43,14 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
+import com.googamaphone.PinnedDialog;
+import com.googamaphone.PinnedDialogManager;
+import com.googamaphone.typeandspeak.FileSynthesizer.FileSynthesizerListener;
+import com.googamaphone.typeandspeak.utils.CharSequenceIterator;
+import com.googamaphone.typeandspeak.utils.GranularTextToSpeech;
+import com.googamaphone.typeandspeak.utils.GranularTextToSpeech.SingAlongListener;
+import com.googamaphone.typeandspeak.utils.ReferencedHandler;
+
 import java.io.IOException;
 import java.net.URL;
 import java.text.BreakIterator;
@@ -60,7 +58,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class TypeAndSpeak extends Activity {
+import de.l3s.boilerpipe.extractors.ArticleExtractor;
+
+public class TypeAndSpeak extends AppCompatActivity {
     /** Stream to use for TTS output and volume control. */
     private static final int STREAM_TYPE = AudioManager.STREAM_MUSIC;
 

@@ -1,14 +1,7 @@
 
 package com.googamaphone.typeandspeak;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Locale;
-
-import com.googamaphone.typeandspeak.utils.ReferencedHandler;
-
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -23,6 +16,14 @@ import android.provider.MediaStore.Audio.Media;
 import android.provider.MediaStore.MediaColumns;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.Engine;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AlertDialog.Builder;
+
+import com.googamaphone.typeandspeak.utils.ReferencedHandler;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Locale;
 
 class FileSynthesizer {
     private static final String UTTERANCE_ID = "synthesize";
@@ -107,7 +108,7 @@ class FileSynthesizer {
 
         final String title = mContext.getString(R.string.canceled_title);
         final String message = mContext.getString(R.string.canceled_message);
-        final AlertDialog alert = new Builder(mContext).setTitle(title).setMessage(message)
+        final android.support.v7.app.AlertDialog alert = new Builder(mContext).setTitle(title).setMessage(message)
                 .setPositiveButton(android.R.string.ok, null).create();
 
         mTts.stop();
@@ -141,7 +142,7 @@ class FileSynthesizer {
         final File outfile = new File(directory + "/" + filename + ".wav");
 
         final String message;
-        final AlertDialog alert;
+        final Dialog alert;
 
         if (outfile.exists()) {
             message = mContext.getString(R.string.exists_message, filename);

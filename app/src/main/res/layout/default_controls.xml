@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
@@ -33,7 +34,7 @@
         android:contentDescription="@string/menu_language"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/ic_menu_language" />
+        app:srcCompat="@drawable/ic_menu_language" />
 
     <ImageView
         android:id="@+id/prefs"
@@ -44,7 +45,7 @@
         android:contentDescription="@string/menu_properties"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/ic_menu_preferences" />
+        app:srcCompat="@drawable/ic_menu_preferences" />
 
     <ImageView
         android:id="@+id/write"
@@ -55,7 +56,7 @@
         android:contentDescription="@string/menu_save"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/ic_menu_save" />
+        app:srcCompat="@drawable/ic_menu_save" />
 
     <ImageView
         android:id="@+id/clear"
@@ -66,7 +67,7 @@
         android:contentDescription="@string/menu_clear"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/ic_menu_delete" />
+        app:srcCompat="@drawable/ic_menu_delete" />
 
     <ImageView
         android:id="@+id/library"
@@ -77,6 +78,6 @@
         android:contentDescription="@string/menu_library"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/ic_menu_archive" />
+        app:srcCompat="@drawable/ic_menu_archive" />
 
 </LinearLayout>

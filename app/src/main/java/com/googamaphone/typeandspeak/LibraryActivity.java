@@ -1,10 +1,6 @@
 
 package com.googamaphone.typeandspeak;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
-
 import android.annotation.TargetApi;
 import android.app.ListActivity;
 import android.content.ContentResolver;
@@ -13,7 +9,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.BaseColumns;
@@ -34,7 +29,11 @@ import android.widget.TextView;
 import com.googamaphone.PinnedDialog;
 import com.googamaphone.PinnedDialogManager;
 
-public class LibraryActivity extends ListActivity {
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+
+public class LibraryActivity extends AppCompatListActivity {
     private static final String[] FROM = new String[] {
             AudioColumns.TITLE, AudioColumns.DATE_ADDED
     };
@@ -88,11 +87,10 @@ public class LibraryActivity extends ListActivity {
         }
     }
 
-    @TargetApi(11)
     class SetupActionBar implements Runnable {
         @Override
         public void run() {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
