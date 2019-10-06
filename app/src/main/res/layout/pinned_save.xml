@@ -24,7 +24,7 @@
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textColorHint="#cccccc"
-        android:textSize="18sp" >
+        android:textSize="18sp">
 
         <requestFocus />
     </EditText>
@@ -42,14 +42,15 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
             android:layout_weight="0.5"
-            android:text="@string/cancel" />
+            android:text="@string/cancel"
+            android:layout_marginEnd="4dp" />
 
         <Button
             android:id="@+id/confirm_save"
             style="@style/blue_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginTop="4dp"
             android:layout_weight="0.5"
             android:text="@string/save" />

@@ -18,7 +18,9 @@
         android:textColor="#99ffffff"
         android:contentDescription="@string/menu_play"
         android:text="@string/play_allcaps"
-        android:paddingRight="6dp" />
+        android:paddingRight="6dp"
+        android:drawableStart="@drawable/ic_menu_play_clip"
+        android:paddingEnd="6dp" />
 
     <View
         android:layout_width="0dp"

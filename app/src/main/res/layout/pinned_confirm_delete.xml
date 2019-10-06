@@ -26,7 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
             android:layout_weight="0.5"
-            android:text="@string/cancel" />
+            android:text="@string/cancel"
+            android:layout_marginEnd="4dp" />
 
         <Button
             android:id="@+id/confirm_delete"
@@ -35,7 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_weight="0.5"
-            android:text="@string/delete" />
+            android:text="@string/delete"
+            android:layout_marginStart="4dp" />
     </LinearLayout>
 
 </LinearLayout>
