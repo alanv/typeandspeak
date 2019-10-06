@@ -12,12 +12,12 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew assembleDebug assembleAndroidTest
     - name: Archive Production Artifact
       uses: actions/upload-artifact@v1
       with:
         name: dist
-        path: dist
+        path: app/build/outputs/apk
   deploy:
     name: deploy
     needs: build
@@ -31,7 +31,10 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: test android run --type instrumentation --app app.apk --test app-test.apk \
-                --device model=Nexus6P,version=26,locale=en,orientation=portrait
+          args: test android run \
+                  --type instrumentation \
+                  --app debug/app-debug.apk \
+                  --test androidTest/debug/app-debug-androidTest.apk \
+                  --device model=Nexus6P,version=26,locale=en,orientation=portrait
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
